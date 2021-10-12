@@ -109,7 +109,7 @@ func (apple *Apple) ReqSearch() {
 func (apple *Apple) sendNotificationToBarkApp(messages []*Message) {
 	for _, msg := range messages {
 		for _, notifyUrl := range apple.configOption.NotifyUrl {
-			url := fmt.Sprintf("%v/%v/%v", notifyUrl, msg.Title, msg.Content)
+			url := fmt.Sprintf("%v/%v/%v?icon=https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone13_hero_09142021_inline.jpg.small_2x.jpg", notifyUrl, msg.Title, msg.Content)
 			_, err := apple.cli.Get(url)
 			if err != nil {
 				log.Printf("[E] send stock message failed. err:%v", err)
