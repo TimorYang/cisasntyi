@@ -79,7 +79,6 @@ func (apple *Apple) ReqSearch() {
 	messages := make([]*Message, 0, 10)
 	stores := searchResponse.Body.Content.PickupMessage.Stores
 	for _, store := range stores {
-
 		for _, info := range store.PartsAvailability {
 			iphoneModal := info.StorePickupProductTitle
 			pickTime := info.PickupSearchQuote
@@ -102,6 +101,9 @@ func (apple *Apple) ReqSearch() {
 			}
 		}
 	}
+	if len(messages) == 0 {
+		log.Printf("❌ 当前位置附近的门店都没有货")	
+	}
 
 	apple.sendNotificationToBarkApp(messages)
 }
@@ -109,7 +111,7 @@ func (apple *Apple) ReqSearch() {
 func (apple *Apple) sendNotificationToBarkApp(messages []*Message) {
 	for _, msg := range messages {
 		for _, notifyUrl := range apple.configOption.NotifyUrl {
-			url := fmt.Sprintf("%v/%v/%v?icon=https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone13_hero_09142021_inline.jpg.small_2x.jpg", notifyUrl, msg.Title, msg.Content)
+			url := fmt.Sprintf("%v/%v/%v?icon=https://www.apple.com/newsroom/images/product/iphone/standard/Apple_iphone13_hero_09142021_inline.jpg.small_2x.jpg&sound=minuet", notifyUrl, msg.Title, msg.Content)
 			_, err := apple.cli.Get(url)
 			if err != nil {
 				log.Printf("[E] send stock message failed. err:%v", err)
