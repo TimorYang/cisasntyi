@@ -95,7 +95,11 @@ func (apple *Apple) ReqSearch() {
 				Content: fmt.Sprintf("取货时间:%v 地点:%v", pickTime, pickStore),
 			}
 
-			messages = append(messages, msg)
+			if strings.Contains(msg.Content, "苏州") {
+				messages = append(messages, msg)
+			} else {
+				log.Printf("⚠️ 型号:%v 地点:%v 不再范围内", iphoneModal, pickStore)
+			}
 		}
 	}
 
