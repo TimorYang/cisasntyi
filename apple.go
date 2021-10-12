@@ -86,16 +86,16 @@ func (apple *Apple) ReqSearch() {
 			pickStore := store.StoreName
 
 			if !apple.hasStockOffline(info.PickupSearchQuote) {
-				log.Printf("[E] 型号:%v 地点:%v %v", iphoneModal, pickStore, pickTime)
 				continue
+			} else {
+				log.Printf("[E] 型号:%v 地点:%v %v", iphoneModal, pickStore, pickTime)
 			}
 
-			msg := &Message{
-				Title:   iphoneModal,
-				Content: fmt.Sprintf("取货时间:%v 地点:%v", pickTime, pickStore),
-			}
-
-			if strings.Contains(msg.Content, "苏州") {
+			if strings.Contains(pickStore, "苏州") {
+				msg := &Message{
+					Title:   iphoneModal,
+					Content: fmt.Sprintf("取货时间:%v 地点:%v", pickTime, pickStore),
+				}
 				messages = append(messages, msg)
 			} else {
 				log.Printf("⚠️ 型号:%v 地点:%v 不再范围内", iphoneModal, pickStore)
